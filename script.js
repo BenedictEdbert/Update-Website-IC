@@ -261,7 +261,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 const divisiData = {
     0: {
       emoji: '⚙️',
-      image: 'images/divisi/ketuawakil.JPG',
+      image: 'images/divisi/ketuawakil.jpg',
       name: 'BPI',
       full: 'Badan Pengurus Inti',
       badge: 'Pengawasan & Evaluasi',
@@ -278,7 +278,7 @@ const divisiData = {
     },
     1: {
       emoji: '🎯',
-      image: 'images/divisi/acara.JPG',
+      image: 'images/divisi/acara.jpg',
       name: 'ACARA',
       full: 'Divisi Acara',
       badge: 'Event & Program',
@@ -293,7 +293,7 @@ const divisiData = {
     },
     2: {
       emoji: '📡',
-      image: 'images/divisi/humas.JPG',
+      image: 'images/divisi/humas.jpg',
       name: 'HUMAS',
       full: 'Hubungan Masyarakat',
       badge: 'Relasi & Komunikasi',
@@ -306,7 +306,7 @@ const divisiData = {
     },
     3: {
       emoji: '💡',
-      image: 'images/divisi/keilmuan.JPG',
+      image: 'images/divisi/keilmuan.jpg',
       name: 'KEILMUAN',
       full: 'Divisi Keilmuan',
       badge: 'Edukasi & Riset',
@@ -320,7 +320,7 @@ const divisiData = {
     },
     4: {
       emoji: '📸',
-      image: 'images/divisi/publidok.JPG',
+      image: 'images/divisi/publidok.jpg',
       name: 'PUBLIDOK',
       full: 'Publikasi & Dokumentasi',
       badge: 'Konten & Media',
@@ -335,7 +335,7 @@ const divisiData = {
     },
     5: {
       emoji: '🍽️',
-      image: 'images/divisi/konsumsi.JPG',
+      image: 'images/divisi/konsumsi.jpg',
       name: 'KONSUM',
       full: 'Divisi Konsumsi',
       badge: 'Logistik & Layanan',
@@ -348,7 +348,7 @@ const divisiData = {
     },
     6: {
       emoji: '💰',
-      image: 'images/divisi/perkap.JPG',
+      image: 'images/divisi/perkap.jpg',
       name: 'DANA & PERKAP',
       full: 'Dana & Perlengkapan',
       badge: 'Dana & Logistik',
