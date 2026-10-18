@@ -1,0 +1,36 @@
+50: /*  HAMBURGER  */
+94: /*  HERO  */
+169: /*  SECTIONS  */
+186: /*  ABOUT  */
+281: /*  DIVISI CAROUSEL  */
+358: /* Carousel controls */
+379: /*  DIVISI PAGE OVERLAY  */
+383: background: rgba(255, 255, 255, 0.85); /* Light frosted glass */
+469: /*  MEMBER CAROUSEL (inside divisi page)  */
+593: /* Fixed back button visible on mobile at top of overlay */
+605: .divisi-page-back { display: none; } /* Hide inline back on mobile, use topbar instead */
+614: /*  EVENTS  */
+617: /* Split Layout: TikTok Style (Adaptive Left, Scrollable Right) */
+620: grid-template-columns: 320px 1fr; /* Exact phone width for the video */
+621: gap: 3rem; /* More breathing room */
+623: height: 568px; /* Exact phone height (16:9 ratio) */
+626: /* Featured (left big) card */
+632: position: relative; /* For overlay text */
+639: position: absolute; /* Take full space */
+656: justify-content: flex-end; /* Push text to bottom like TikTok */
+661: pointer-events: none; /* Let clicks pass to video if needed */
+675: /* Right scrollable column */
+692: /* Event card horizontal style */
+735: .event-featured { height: 400px; } /* Fixed height for video */
+746: /* Make events sidebar scroll horizontally */
+768: /*  CONTACT SECTION REDESIGN  */
+878: /* Form Grid Layout */
+889: /* Select Dropdowns */
+919: /* NIM Note Alert */
+934: /*  JOIN FORM SECTION  */
+986: /* Success Screen State */
+1057: /* Button Spinner */
+1099: /*  FOOTER  */
+1145: /*  SCROLL REVEAL  */
+1149: /*  STANDALONE JOIN PAGE LAYOUT  */
+1184: /*  RESPONSIVE  */

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informatics Community</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Perubahan: Ditambahkan script untuk mendeteksi apakah tersimpan data bahwa intro website sudah main atau belum, jika udah maka di skip dan tidak akan dimainkan lagi -->
+<script>
+  try {
+    if (sessionStorage.getItem('ic-intro-seen')) {
+      document.documentElement.classList.add('skip-intro');
+    }
+  } catch (e) {}
+</script>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/x-icon" href="/images/logoic.png">
+
+</head> 
+<body>
+<!-- IC TERMINAL BOOTLOADER -->
+<div id="ic-loader">
+  <div class="loader-terminal" id="loader-terminal">
+    <span class="loader-cursor" id="loader-cursor"></span>
+  </div>
+</div>
+
+<!-- FIXED BACKGROUND GLASSMORPHISM -->
+<canvas id="hero-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="#" onclick="window.location.reload(true); return false;" class="nav-logo" style="display: flex; align-items: center; justify-content: center;" aria-label="Refresh Homepage">
+    <!-- Perubahan: Membuat logo IC lebih besar -->
+    <img src="images/logoic.png" alt="IC Logo" style="height: 56px; width: auto;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#divisi">Divisi</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#home" class="mobile-nav-link">Home</a></li>
+    <li><a href="#about" class="mobile-nav-link">Tentang</a></li>
+    <li><a href="#divisi" class="mobile-nav-link">Divisi</a></li>
+    <li><a href="#events" class="mobile-nav-link">Events</a></li>
+    <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+  </ul>
+  <div class="mobile-menu-socials">
+    <a href="https://www.instagram.com/ic.ibikkg/" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+      </svg>
+      Instagram
+    </a>
+    <a href="https://www.linkedin.com/company/informatics-community-kkg/" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+      </svg>
+      LinkedIn
+    </a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-content">
+    <h1 class="hero-title interactive-title" id="heroTitle">
+      <div class="title-line title-word-1">Informatics</div>
+      <div class="title-line title-word-2">Community</div>
+    </h1>
+    <p class="hero-sub" id="heroSub">
+      Kami hadir bukan hanya untuk berkumpul, tetapi untuk bertumbuh bersama. Menghubungkan gagasan, memperkuat kolaborasi, dan mengubah semangat menjadi karya yang berdampak nyata.
+    </p>
+    <div class="hero-actions" id="heroActions">
+      <a href="join.html" class="btn-hero-join">
+        <div class="sweep"></div>
+        <span>Pendaftaran Ditutup</span>
+        <svg class="join-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <h2 class="section-title">Tentang Informatics Community</h2>
+    <div class="about-grid reveal">
+      <div class="about-text">
+          <div class="vm-container">
+            <!-- VISI CARD -->
+            <div class="vm-card">
+              <div class="vm-header">
+                <div class="vm-icon">
+                  <!-- Perubahan: Diubah menjadi gambar bola lampu -->
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18h6"></path>
+                    <path d="M10 22h4"></path>
+                    <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path>
+                  </svg>
+                </div>
+                <h3>VISI</h3>
+              </div>
+              <p class="vm-body">
+                Mewujudkan HIMA Informatics Community sebagai organisasi yang aktif, inovatif, dan solutif dalam mengembangkan potensi mahasiswa serta memberikan kontribusi nyata di bidang teknologi dan masyarakat.
+              </p>
+            </div>
+
+            <!-- MISI CARD -->
+            <div class="vm-card">
+              <div class="vm-header">
+                <div class="vm-icon">
+                  <!-- Perubahan: Diubah menjadi gambar target -->
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="6"></circle>
+                    <circle cx="12" cy="12" r="2"></circle>
+                  </svg>
+                </div>
+                <h3>MISI</h3>
+              </div>
+              <div class="vm-body">
+                <ul class="misi-list">
+                  <li>
+                    <span class="misi-bullet">01</span>
+                    <p><strong>Menjadi wadah aspirasi</strong> dan pengembangan diri bagi mahasiswa Informatika dalam aspek akademik maupun non-akademik.</p>
+                  </li>
+                  <li>
+                    <span class="misi-bullet">02</span>
+                    <p><strong>Mendorong peningkatan kompetensi</strong> anggota melalui pelatihan soft skill dan hard skill berbasis tren terkini di bidang teknologi.</p>
+                  </li>
+                  <li>
+                    <span class="misi-bullet">03</span>
+                    <p><strong>Membangun kultur organisasi</strong> yang profesional, inklusif, dan kolaboratif baik internal maupun lintas organisasi.</p>
+                  </li>
+                  <li>
+                    <span class="misi-bullet">04</span>
+                    <p><strong>Menciptakan program kerja</strong> yang memberikan dampak positif dan relevan dengan kebutuhan mahasiswa serta masyarakat sekitar.</p>
+                  </li>
+                  <li>
+                    <span class="misi-bullet">05</span>
+                    <p><strong>Menjalin relasi strategis</strong> antara mahasiswa, dosen, alumni, dan pihak eksternal guna menciptakan ekosistem yang berdaya saing tinggi.</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Terminal Visual -->
+      <div class="about-terminal">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </div>
+          <div class="terminal-title">ic-profile.json</div>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-line"><span class="prompt">$</span> <span class="cmd">cat</span> <span class="arg">ic-profile.json</span></div>
+          <div class="terminal-output">
+            <pre><code>{
+  <span class="json-key">"nama"</span>: <span class="json-val-str">"Informatics Community"</span>,
+  <span class="json-key">"singkatan"</span>: <span class="json-val-str">"IC"</span>,
+  <span class="json-key">"kampus"</span>: <span class="json-val-str">"IBI Kwik Kian Gie"</span>,
+  <span class="json-key">"lokasi"</span>: <span class="json-val-str">"Jakarta, Indonesia"</span>,
+  <span class="json-key">"jurusan"</span>: [
+    <span class="json-val-str">"Teknik Informatika"</span>,
+    <span class="json-val-str">"Sistem Informasi"</span>
+  ],
+  <span class="json-key">"visi"</span>: <span class="json-val-str">"Unggul, Inovatif, Berdampak"</span>,
+  <span class="json-key">"berdiri"</span>: <span class="json-val-num">2015</span>,
+  <span class="json-key">"aktif"</span>: <span class="json-val-bool">true</span>,
+  <span class="json-key">"kontak"</span>: {
+    <span class="json-key">"email"</span>: <span class="json-val-str">"ic@kwikkiangie.ac.id"</span>,
+    <span class="json-key">"instagram"</span>: <span class="json-val-str">"@ic.ibikkg"</span>
+    <span class="json-key">"linkedin"</span>: <span class="json-val-str">"Informatics Community"</span>
+  }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVISI -->
+<section id="divisi">
+  <div class="container">
+    <h2 class="section-title">Pengurusan Divisi</h2>
+    <div class="carousel-wrapper reveal">
+      <div class="carousel-track-outer">
+        <div class="carousel-track" id="divisiTrack">
+          <!-- BPI -->
+          <div class="divisi-card" data-index="0">
+            <div class="divisi-img">
+              <!-- Perubahan: Menambah decoding="async" pada meringankan image -->
+              <img loading="lazy" decoding="async" src="images/divisi/ketuawakil.jpg" alt="Badan Pengurus Inti">
+            </div>
+            <div class="divisi-body">
+              <div class="divisi-name">BPI</div>
+              <div class="divisi-full">Badan Pengurus Inti</div>
+              <div class="divisi-desc">Memastikan tata kelola organisasi berjalan transparan, akuntabel, dan sesuai dengan nilai serta regulasi yang telah ditetapkan.</div>
+              <span class="ph-badge">Pengawasan & Evaluasi</span>
+            </div>
+          </div>
+          <!-- ACARA -->
+          <div class="divisi-card" data-index="1">
+            <div class="divisi-img">
+              <!-- Perubahan: Menambah decoding="async" pada meringankan image -->
+              <img loading="lazy" decoding="async" src="images/divisi/acara.jpg" alt="Divisi Acara">
+            </div>
+            <div class="divisi-body">
+              <div class="divisi-name">ACARA</div>
+              <div class="divisi-full">Divisi Acara</div>
+              <div class="divisi-desc">Merancang dan mengelola seluruh rangkaian kegiatan dan event organisasi agar berjalan terstruktur dan berkesan.</div>
+              <span class="ph-badge">Event & Program</span>
+            </div>
+          </div>
+          <!-- HUMAS -->
+          <div class="divisi-card" data-index="2">
+            <div class="divisi-img">
+              <!-- Perubahan: Menambah decoding="async" pada meringankan image -->
+              <img loading="lazy" decoding="async" src="images/divisi/humas.jpg" alt="Hubungan Masyarakat">
+            </div>
+            <div class="divisi-body">
+              <div class="divisi-name">HUMAS</div>
+              <div class="divisi-full">Hubungan Masyarakat</div>
+              <div class="divisi-desc">Membangun dan menjaga relasi dengan pihak eksternal, mitra, institusi, serta komunitas lain di luar organisasi.</div>
+              <span class="ph-badge">Relasi & Komunikasi</span>
+            </div>
+          </div>
+          <!-- KEILMUAN -->
+          <div class="divisi-card" data-index="3">
+            <div class="divisi-img">
+              <!-- Perubahan: Menambah decoding="async" pada meringankan image -->
+              <img loading="lazy" decoding="async" src="images/divisi/keilmuan.jpg" alt="Divisi Keilmuan">
+            </div>
+            <div class="divisi-body">
+              <div class="divisi-name">KEILMUAN</div>
+              <div class="divisi-full">Divisi Keilmuan</div>
+              <div class="divisi-desc">Mendorong pengembangan ilmu pengetahuan dan kompetensi teknis anggota melalui diskusi, pelatihan, dan program akademik.</div>
+              <span class="ph-badge">Edukasi & Riset</span>
+            </div>
+          </div>
+          <!-- PUBLIDOK -->
+          <div class="divisi-card" data-index="4">
+            <div class="divisi-img">
+              <!-- Perubahan: Menambah decoding="async" pada meringankan image -->
+              <img loading="lazy" decoding="async" src="images/divisi/publidok.jpg" alt="Publikasi & Dokumentasi">
+            </div>
+            <div class="divisi-body">
+              <div class="divisi-name">PUBLIDOK</div>
+              <div class="divisi-full">Publikasi & Dokumentasi</div>
+              <div class="divisi-desc">Mengelola konten, publikasi digital, serta mendokumentasikan seluruh kegiatan organisasi secara profesional dan kreatif.</div>
+              <span class="ph-badge">Konten & Media</span>
+            </div>
+          </div>
+          <!-- KONSUM -->
+          <div class="divisi-card" data-index="5">
+            <div class="divisi-img">
+              <!-- Perubahan: Menambah decoding="async" pada meringankan image -->
+              <img loading="lazy" decoding="async" src="images/divisi/konsumsi.jpg" alt="Divisi Konsumsi">
+            </div>
+            <div class="divisi-body">
+              <div class="divisi-name">KONSUM</div>
+              <div class="divisi-full">Divisi Konsumsi</div>
+              <div class="divisi-desc">Memastikan kebutuhan konsumsi setiap kegiatan terpenuhi dengan baik, terencana, dan efisien untuk mendukung kelancaran acara.</div>
+              <span class="ph-badge">Logistik & Layanan</span>
+            </div>
+          </div>
+          <!-- DANA & PERKAP -->
+          <div class="divisi-card" data-index="6">
+            <div class="divisi-img">
+              <!-- Perubahan: Menambah decoding="async" pada meringankan image -->
+              <img loading="lazy" decoding="async" src="images/divisi/perkap.jpg" alt="Dana & Perlengkapan">
+            </div>
+            <div class="divisi-body">
+              <div class="divisi-name">DANA & PERKAP</div>
+              <div class="divisi-full">Dana & Perlengkapan</div>
+              <div class="divisi-desc">Memastikan semua kebutuhan perlengkapan kegiatan tersedia tepat waktu dan sesuai anggaran.</div>
+              <span class="ph-badge">Dana & Logistik</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-btn" id="prevBtn">&#8592;</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <button class="carousel-btn" id="nextBtn">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <div class="container">
+    <!-- Perubahan: Mengubah Events & Program -> Events & Activities, serta tombol untuk switch antar tab -->
+    <h2 class="section-title">Events & Activities</h2>
+
+    <!-- TAB SWITCHER -->
+    <div class="events-tabs" role="tablist">
+      <button type="button" class="events-tab active" role="tab" id="tab-btn-events"
+              aria-selected="true" aria-controls="panel-events" data-tab="events">Events</button>
+      <button type="button" class="events-tab" role="tab" id="tab-btn-activities"
+              aria-selected="false" aria-controls="panel-activities" data-tab="activities">Activities</button>
+    </div>
+
+    <!-- PANEL: EVENTS (semua yang tadinya ada) -->
+    <div class="events-panel" id="panel-events" role="tabpanel" aria-labelledby="tab-btn-events">
+      <div class="events-layout reveal">
+        <!-- FEATURED: Event terakhir (kiri besar) -->
+      <div class="event-featured" id="featured-container" style="transition: opacity 0.3s ease;">
+        <!-- Mute/Unmute Button -->
+        <!-- Perubahan: Membuat video lebih ringan dengan menghilangkan transition dan blur tombol mute -->
+        <button id="mute-btn" onclick="toggleMute()" style="position: absolute; top: 15px; right: 15px; z-index: 10; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer;">
+          <span id="mute-icon">🔇</span>
+        </button>
+        <div class="event-thumb" style="background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0;">
+          <!-- Perubahan: Membuat video lebih ringan dengan mempreload metadatanya -->
+          <video id="featured-video" src="images/events/pizzahutphi.mp4" poster="images/events/pizza-hut.jpg" preload="metadata" loop muted playsinline disablepictureinpicture style="width: 100%; height: 100%;"></video>
+        </div>
+        <div class="event-body">
+          <div class="event-meta">
+            <span id="featured-year">2026</span>
+            <span class="event-status past" id="featured-status">Selesai</span>
+          </div>
+          <div class="event-title" id="featured-title">Seminar Tech & Talk: Pizza Hut Indonesia</div>
+          <div class="event-desc" id="featured-desc">Seminar Tech & Talk "Build Apps, Build Yourself" bersama Pizza Hut Indonesia — berbagi pengetahuan tentang teknologi dan industri untuk mempersiapkan mahasiswa menghadapi tantangan dunia kerja digital.</div>
+        </div>
+      </div>
+      <!-- SIDEBAR: Cards lainnya (kanan, bisa scroll) -->
+      <div class="events-sidebar">
+        <!-- Card 1: Pizza Hut -->
+        <div class="event-card reveal" style="cursor: pointer;" onclick="changeFeaturedEvent('images/events/pizzahutphi.mp4', '2026', 'Selesai', 'past', 'Seminar Tech & Talk: Pizza Hut Indonesia', 'Seminar Tech & Talk &quot;Build Apps, Build Yourself&quot; bersama Pizza Hut Indonesia — berbagi pengetahuan tentang teknologi dan industri untuk mempersiapkan mahasiswa menghadapi tantangan dunia kerja digital.')">
+          <div class="event-thumb" style="overflow: hidden; padding: 0;">
+            <!-- Perubahan: Menambah decoding="async" pada meringankan image -->
+            <img loading="lazy" decoding="async" src="images/events/pizza-hut.jpg" alt="PHI" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div class="event-body">
+            <div class="event-meta">
+              <span>2026</span>
+              <span class="event-status past">Selesai</span>
+            </div>
+            <div class="event-title">Seminar Tech & Talk: Pizza Hut Indonesia</div>
+            <div class="event-desc">Berbagi pengetahuan teknologi & industri.</div>
+          </div>
+        </div>
+        <!-- Card 2: AORUS -->
+        <div class="event-card reveal" style="cursor: pointer;" onclick="changeFeaturedEvent('images/events/aorus.mp4', '2025', 'Selesai', 'past', 'AORUS Campus Tour: Workshop & Kompetisi AI', 'AORUS Campus Tour adalah acara pameran dan lokakarya teknologi yang memperkenalkan AI kepada mahasiswa melalui kolaborasi kampus dengan industri teknologi global AORUS.')">
+          <div class="event-thumb" style="overflow: hidden; padding: 0;">
+            <!-- Perubahan: Menambah decoding="async" pada meringankan image -->
+            <img loading="lazy" decoding="async" src="images/events/AORUS.jpg" alt="AORUS" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div class="event-body">
+            <div class="event-meta">
+              <span>2025</span>
+              <span class="event-status past">Selesai</span>
+            </div>
+            <div class="event-title">AORUS Campus Tour</div>
+            <div class="event-desc">Pameran dan lokakarya teknologi AI dari AORUS.</div>
+          </div>
+        </div>
+        <!-- Card 3: Wadhwani -->
+        <div class="event-card reveal" style="cursor: pointer;" onclick="changeFeaturedEvent('images/events/wadhwani.mp4', '2025', 'Selesai', 'past', 'Seminar Soft Skill bersama Wadhwani Foundation', 'Seminar pengembangan soft skill di bidang Teknologi Informasi, bekerja sama dengan Wadhwani Foundation. Dirancang khusus agar mahasiswa lebih siap menghadapi tantangan dunia kerja dengan kemampuan non-teknis yang solid.')">
+          <div class="event-thumb" style="overflow: hidden; padding: 0;">
+            <!-- Perubahan: Menambah decoding="async" pada meringankan image -->
+            <img loading="lazy" decoding="async" src="images/events/WADHWANI.png" alt="Wadhwani" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div class="event-body">
+            <div class="event-meta">
+              <span>2025</span>
+              <span class="event-status past">Selesai</span>
+            </div>
+            <div class="event-title">Seminar Soft Skill Wadhwani</div>
+            <div class="event-desc">Pengembangan soft skill TI bersama Wadhwani Foundation.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- PANEL: ACTIVITIES (kosong dulu) -->
+    <div class="events-panel" id="panel-activities" role="tabpanel" aria-labelledby="tab-btn-activities" hidden>
+      <div class="events-empty"><b>Activities segera hadir.</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <h2 class="section-title">Temukan <span class="gradient-text">Kami</span></h2>
+    <div class="contact-cards reveal">
+      <!-- INSTAGRAM -->
+      <a href="https://www.instagram.com/ic.ibikkg/" target="_blank" class="contact-card">
+        <div class="contact-card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <div class="contact-card-text">
+          <div class="contact-card-label">INSTAGRAM</div>
+          <div class="contact-card-value">
+            <strong>@ic.ibikkg</strong> <span class="contact-card-sub">— Follow untuk update terbaru kegiatan IC</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- EMAIL -->
+      <a href="mailto:ic@kwikkiangie.ac.id" target="_blank" class="contact-card">
+        <div class="contact-card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div class="contact-card-text">
+          <div class="contact-card-label">EMAIL</div>
+          <div class="contact-card-value">
+            <strong>ic@kwikkiangie.ac.id</strong> <span class="contact-card-sub">— Kirim pertanyaan atau proposal kerjasama</span>
+          </div>
+        </div>
+      </a>
+      <!-- LINKEDIN -->
+      <a href="https://www.linkedin.com/company/informatics-community-kkg/" target="_blank" class="contact-card">
+        <div class="contact-card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+          </svg>
+        </div>
+        <div class="contact-card-text">
+          <div class="contact-card-label">LINKEDIN</div>
+          <div class="contact-card-value">
+            <strong>Informatics Community</strong> <span class="contact-card-sub">— Terhubung dengan jaringan profesional kami</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#home" class="nav-logo" style="font-size:1.1rem; display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;">
+          <img src="images/logoic.png" alt="IC Logo" style="height: 32px; width: auto;">
+          Informatics Community
+        </a>
+        <p>Wadah kolaborasi dan inovasi mahasiswa informatika untuk menciptakan generasi teknologi yang unggul dan berdampak.</p>
+        <div class="socials">
+          <a href="https://www.instagram.com/ic.ibikkg/" target="_blank" title="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <a href="https://www.linkedin.com/company/informatics-community-kkg/" target="_blank" title="LinkedIn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigasi</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">Tentang</a></li>
+          <li><a href="#divisi">Divisi</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Divisi</h4>
+        <ul>
+          <!-- Perubahan: Ketika link divisi di footer di klik, langsung ke divisi tersebut -->
+          <li><a href="#divisi" data-divisi="0">BPI</a></li>
+          <li><a href="#divisi" data-divisi="1">Acara</a></li>
+          <li><a href="#divisi" data-divisi="2">Humas</a></li>
+          <li><a href="#divisi" data-divisi="3">Keilmuan</a></li>
+          <li><a href="#divisi" data-divisi="4">Publidok</a></li>
+          <li><a href="#divisi" data-divisi="5">Konsum</a></li>
+          <li><a href="#divisi" data-divisi="6">Dana & Perkap</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2026 Informatics Community. All rights reserved.</div>
+      <div class="footer-tagline">Dibuat oleh Divisi Keilmuan IC</div>
+    </div>
+  </div>
+</footer>
+
+<!-- DIVISI OVERLAY PAGE -->
+  <div class="divisi-overlay" id="divisiOverlay">
+    <div class="divisi-overlay-topbar">
+      <!-- Perubahan: Menghilangkan logo IC agar tombol ← Kembali lebih rapi -->
+      <button class="btn-ghost" style="padding: 0.5rem 1.2rem; font-size: 0.85rem;" onclick="closeDivisiPage()">
+        ← Kembali
+      </button>
+    </div>
+    <div class="divisi-page" id="divisiPageContent">
+    <!-- Content injected by JS -->
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
