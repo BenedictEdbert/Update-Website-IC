@@ -4,7 +4,7 @@ if (heroCanvas) {
   const hCtx = heroCanvas.getContext('2d');
   let hW, hH;
   let mouse = { x: -1000, y: -1000, radius: 150 };
-  
+
   window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
   window.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
 
@@ -13,12 +13,12 @@ if (heroCanvas) {
   function initMatrix() {
     hW = heroCanvas.width = window.innerWidth;
     hH = heroCanvas.height = window.innerHeight;
-    
+
     // Perubahan: Mengurangi particle untuk Mobile
     const density = window.innerWidth < 480 ? 22000 : 10000;
-    const particleCount = Math.floor((hW * hH) / density);  
+    const particleCount = Math.floor((hW * hH) / density);
     particles = [];
-    
+
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * hW,
@@ -29,9 +29,9 @@ if (heroCanvas) {
       });
     }
   }
-  
+
   initMatrix();
-  
+
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -49,30 +49,30 @@ if (heroCanvas) {
     }
 
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    
+
     hCtx.clearRect(0, 0, hW, hH);
     hCtx.lineWidth = 1;
-    
+
     for (let i = 0; i < particles.length; i++) {
       let p = particles[i];
-      
+
       p.x += p.vx;
       p.y += p.vy;
-      
+
       if (p.x < 0 || p.x > hW) p.vx *= -1;
       if (p.y < 0 || p.y > hH) p.vy *= -1;
-      
+
       hCtx.beginPath();
       hCtx.arc(p.x, p.y, p.radius * 1.5, 0, Math.PI * 2);
       hCtx.fillStyle = isDark ? 'rgba(59, 130, 246, 0.8)' : 'rgba(59, 130, 246, 0.6)'; // Blue 500
       hCtx.fill();
-      
+
       for (let j = i + 1; j < particles.length; j++) {
         let p2 = particles[j];
         let dx = p.x - p2.x;
         let dy = p.y - p2.y;
-        let dist = Math.sqrt(dx*dx + dy*dy);
-        
+        let dist = Math.sqrt(dx * dx + dy * dy);
+
         if (dist < 130) {
           hCtx.beginPath();
           hCtx.moveTo(p.x, p.y);
@@ -83,10 +83,10 @@ if (heroCanvas) {
           hCtx.stroke();
         }
       }
-      
+
       let mdx = mouse.x - p.x;
       let mdy = mouse.y - p.y;
-      let mDist = Math.sqrt(mdx*mdx + mdy*mdy);
+      let mDist = Math.sqrt(mdx * mdx + mdy * mdy);
       if (mDist < mouse.radius) {
         hCtx.beginPath();
         hCtx.moveTo(p.x, p.y);
@@ -97,10 +97,10 @@ if (heroCanvas) {
         hCtx.stroke();
       }
     }
-    
+
     requestAnimationFrame(animateHero);
   }
-  
+
   animateHero();
 }
 
@@ -111,15 +111,15 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 // ─── HAMBURGER MENU ───
-(function() {
+(function () {
   const btn = document.getElementById('hamburger');
   const menu = document.getElementById('mobileMenu');
   // Perubahan: Membuat agar halaman utama di background tidak bisa di scroll ketika dalam mobile menu
   function toggleMenu(force) {
     const open = force !== undefined ? force : !btn.classList.contains('open');
-  btn.classList.toggle('open', open);
-  menu.classList.toggle('open', open);
-  document.documentElement.classList.toggle('menu-open', open);
+    btn.classList.toggle('open', open);
+    menu.classList.toggle('open', open);
+    document.documentElement.classList.toggle('menu-open', open);
   }
   btn.addEventListener('click', () => toggleMenu());
   document.querySelectorAll('.mobile-nav-link').forEach(a => {
@@ -128,7 +128,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 })();
 
 // ─── DIVISI CAROUSEL (INFINITE LOOP) ───
-(function() {
+(function () {
   const track = document.getElementById('divisiTrack');
   const origCards = Array.from(track.querySelectorAll('.divisi-card'));
   const dotsContainer = document.getElementById('carouselDots');
@@ -186,7 +186,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     current = index;
     if (animate) {
       isTransitioning = true;
-      track.style.transition = 'transform 0.45s cubic-bezier(0.4,0,0.2,1)';
+      track.style.transition = 'transform 0.3s cubic-bezier(0.4,0,0.2,1)'; // Perubahan: lebih cepat (sebelumnya 0.45s)
     } else {
       track.style.transition = 'none';
     }
@@ -195,7 +195,9 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   }
 
   // After transition ends, silently jump if at clone zone
-  track.addEventListener('transitionend', () => {
+  track.addEventListener('transitionend', (e) => {
+    // Perubahan: abaikan transisi milik card di dalam track, hanya hitung transisi track itu sendiri
+    if (e.target !== track) return;
     isTransitioning = false;
     const cloneTotal = total * 3;
     if (current < total) {
@@ -246,6 +248,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   // Perubahan: Ketika link divisi di footer di klik, langsung ke divisi tersebut
   window.goToDivisi = function (realIdx) {
     if (realIdx < 0 || realIdx >= total) return;
+    if (window.setDivisiPeriod) window.setDivisiPeriod('2024-2025'); // carousel ini milik periode 2024/2025
     isTransitioning = false;          // jangan sampai terkunci kalau animasi sedang berjalan
     goTo(total + realIdx, false);     // pindah langsung tanpa animasi
   };
@@ -257,110 +260,171 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   });
 })();
 
+// ─── DIVISI PERIOD SWITCHER (DROPDOWN) ───
+(function () {
+  const dropdown = document.getElementById('periodDropdown');
+  if (!dropdown) return;
+  const btn = document.getElementById('periodDropdownBtn');
+  const menu = document.getElementById('periodDropdownMenu');
+  const valueEl = document.getElementById('periodDropdownValue');
+  const options = Array.from(menu.querySelectorAll('.period-option'));
+  const panels = document.querySelectorAll('.period-panel');
+
+  function openMenu() {
+    menu.hidden = false;
+    dropdown.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+  function closeMenu() {
+    menu.hidden = true;
+    dropdown.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  window.setDivisiPeriod = function (period) {
+    options.forEach(o => {
+      const on = o.dataset.period === period;
+      o.classList.toggle('active', on);
+      o.setAttribute('aria-selected', on ? 'true' : 'false');
+      if (on) valueEl.textContent = o.textContent;
+    });
+    panels.forEach(p => { p.hidden = p.id !== 'period-' + period; });
+    // Carousel butuh dihitung ulang posisinya setelah panel tampil kembali
+    window.dispatchEvent(new Event('resize'));
+  };
+
+  btn.addEventListener('click', () => (menu.hidden ? openMenu() : closeMenu()));
+
+  options.forEach(o => {
+    o.addEventListener('click', () => {
+      window.setDivisiPeriod(o.dataset.period);
+      closeMenu();
+      btn.focus();
+    });
+  });
+
+  document.addEventListener('click', e => { if (!dropdown.contains(e.target)) closeMenu(); });
+
+  dropdown.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeMenu(); btn.focus(); return; }
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (menu.hidden) openMenu();
+      const idx = options.indexOf(document.activeElement);
+      const next = e.key === 'ArrowDown' ? idx + 1 : idx - 1;
+      options[(next + options.length) % options.length].focus();
+    }
+    if ((e.key === 'Enter' || e.key === ' ') && options.includes(document.activeElement)) {
+      e.preventDefault();
+      document.activeElement.click();
+    }
+  });
+})();
+
 // ─── DIVISI PAGE SYSTEM ───
 const divisiData = {
-    0: {
-      emoji: '⚙️',
-      image: 'images/divisi/ketuawakil.jpg',
-      name: 'BPI',
-      full: 'Badan Pengurus Inti',
-      badge: 'Pengawasan & Evaluasi',
-      desc: 'Badan Pengurus Inti (BPI) bertugas memastikan seluruh tata kelola organisasi berjalan dengan transparan, akuntabel, dan sesuai dengan nilai serta regulasi yang telah ditetapkan. BPI menjadi garda terdepan dalam menjaga integritas dan profesionalisme Informatics Community.',
-      tasks: ['Mengawasi jalannya kegiatan organisasi', 'Melakukan evaluasi program kerja secara berkala', 'Memastikan kepatuhan terhadap AD/ART organisasi', 'Memberikan rekomendasi perbaikan tata kelola', 'Menjaga transparansi laporan keuangan', 'Mediasi konflik internal organisasi'],
-      members: [
-        { name: 'Ketua', role: 'Ketua', image: 'images/members/Ketua.png' },
-        { name: 'Wakil Ketua', role: 'Wakil Ketua', image: 'images/members/Wakil.png' },
-        { name: 'Sekretaris 1', role: 'Sekretaris 1', image: 'images/members/Sekretaris 1.png' },
-        { name: 'Sekretaris 2', role: 'Sekretaris 2', image: 'images/members/Sekretaris 2.png' },
-        { name: 'Bendahara 1', role: 'Bendahara 1', image: 'images/members/Bendahara 1.png' },
-        { name: 'Bendahara 2', role: 'Bendahara 2', image: 'images/members/Bendahara 2.png' }
-      ]
-    },
-    1: {
-      emoji: '🎯',
-      image: 'images/divisi/acara.jpg',
-      name: 'ACARA',
-      full: 'Divisi Acara',
-      badge: 'Event & Program',
-      desc: 'Divisi Acara bertanggung jawab merancang, mengelola, dan menjalankan seluruh rangkaian kegiatan dan event organisasi agar berjalan terstruktur, tepat waktu, dan berkesan bagi semua peserta. Dari seminar hingga kompetisi, Divisi Acara menjadi motor penggerak program-program unggulan IC.',
-      tasks: ['Perencanaan dan konsep acara', 'Koordinasi teknis pelaksanaan event', 'Manajemen timeline kegiatan', 'Briefing dan koordinasi antar divisi', 'Evaluasi pasca kegiatan', 'Pengembangan format acara baru'],
-      members: [
-        { name: 'Koordinator Acara', role: 'Koordinator', image: 'images/members/Div. Acara.png' },
-        { name: 'Anggota Acara 1', role: 'Staff Acara', image: 'images/members/Div. Acara (3).png' },
-        { name: 'Anggota Acara 2', role: 'Staff Acara', image: 'images/members/Div. Acara (5).png' },
-        { name: 'Anggota Acara 3', role: 'Staff Acara', image: 'images/members/Div. Acara (7).png' }
-      ]
-    },
-    2: {
-      emoji: '📡',
-      image: 'images/divisi/humas.jpg',
-      name: 'HUMAS',
-      full: 'Hubungan Masyarakat',
-      badge: 'Relasi & Komunikasi',
-      desc: 'Divisi Hubungan Masyarakat (HUMAS) bertugas membangun dan menjaga relasi yang kuat dengan pihak eksternal, mitra strategis, institusi pendidikan, serta komunitas lain di luar organisasi. HUMAS menjadi wajah IC dalam menjalin kolaborasi dan kemitraan yang berdampak positif.',
-      tasks: ['Menjalin kerjasama dengan mitra eksternal', 'Koordinasi dengan kampus dan institusi', 'Membangun jaringan antar komunitas', 'Outreach dan rekrutmen anggota baru', 'Representasi IC di forum eksternal', 'Pengelolaan MoU dan kerjasama'],
-      members: [
-        { name: 'Koordinator Humas', role: 'Koordinator', image: 'images/members/Div. Humas.png' },
-        { name: 'Anggota Humas', role: 'Staff Humas', image: 'images/members/Div. Humas (3).png' }
-      ]
-    },
-    3: {
-      emoji: '💡',
-      image: 'images/divisi/keilmuan.jpg',
-      name: 'KEILMUAN',
-      full: 'Divisi Keilmuan',
-      badge: 'Edukasi & Riset',
-      desc: 'Divisi Keilmuan mendorong pengembangan ilmu pengetahuan dan kompetensi teknis anggota melalui diskusi ilmiah, pelatihan terstruktur, dan program akademik berkualitas. Divisi ini menjadi pusat pertumbuhan intelektual dan riset di lingkungan Informatics Community.',
-      tasks: ['Menyelenggarakan workshop teknis', 'Program mentoring akademik', 'Diskusi ilmiah rutin (sharing session)', 'Kompetisi dan olimpiade internal', 'Pengembangan kurikulum pelatihan', 'Riset dan kajian teknologi terkini'],
-      members: [
-        { name: 'Koordinator Keilmuan', role: 'Koordinator', image: 'images/members/Div. Keilmuan.png' },
-        { name: 'Anggota Keilmuan 1', role: 'Staff Keilmuan', image: 'images/members/Div. Keilmuan (3).png' },
-        { name: 'Anggota Keilmuan 2', role: 'Staff Keilmuan', image: 'images/members/Div. Keilmuan (5).png' }
-      ]
-    },
-    4: {
-      emoji: '📸',
-      image: 'images/divisi/publidok.jpg',
-      name: 'PUBLIDOK',
-      full: 'Publikasi & Dokumentasi',
-      badge: 'Konten & Media',
-      desc: 'Divisi Publikasi dan Dokumentasi (PUBLIDOK) mengelola seluruh konten digital, publikasi media sosial, serta mendokumentasikan setiap kegiatan organisasi secara profesional and kreatif. PUBLIDOK memastikan jejak dan identitas IC tersebar luas di dunia digital.',
-      tasks: ['Desain konten media sosial', 'Fotografi dan videografi kegiatan', 'Pengelolaan akun sosial media IC', 'Produksi konten kreatif & reels', 'Pembuatan poster dan materi promosi', 'Arsip dokumentasi digital organisasi'],
-      members: [
-        { name: 'Koordinator Publidok', role: 'Koordinator', image: 'images/members/Div. Publidok.png' },
-        { name: 'Anggota Publidok 1', role: 'Staff Publidok', image: 'images/members/Div. Publidok (3).png' },
-        { name: 'Anggota Publidok 2', role: 'Staff Publidok', image: 'images/members/Div. Publidok (5).png' },
-        { name: 'Anggota Publidok 3', role: 'Staff Publidok', image: 'images/members/Div. Publidok (7).png' }
-      ]
-    },
-    5: {
-      emoji: '🍽️',
-      image: 'images/divisi/konsumsi.jpg',
-      name: 'KONSUM',
-      full: 'Divisi Konsumsi',
-      badge: 'Logistik & Layanan',
-      desc: 'Divisi Konsumsi memastikan kebutuhan konsumsi setiap kegiatan organisasi terpenuhi dengan baik, terencana, dan efisien. Divisi ini bekerja keras di balik layar untuk mendukung kelancaran setiap acara dengan memperhatikan kualitas, kuantitas, dan ketepatan waktu penyajian.',
-      tasks: ['Perencanaan kebutuhan konsumsi acara', 'Survey dan pemilihan vendor konsumsi', 'Pengelolaan anggaran konsumsi', 'Koordinasi distribusi konsumsi', 'Quality control penyajian makanan', 'Evaluasi kepuasan peserta acara'],
-      members: [
-        { name: 'Koordinator Konsumsi', role: 'Koordinator', image: 'images/members/Div. Konsum (1).png' },
-        { name: 'Anggota Konsumsi', role: 'Staff Konsumsi', image: 'images/members/Div. Konsum (2).png' }
-      ]
-    },
-    6: {
-      emoji: '💰',
-      image: 'images/divisi/perkap.jpg',
-      name: 'DANA & PERKAP',
-      full: 'Dana & Perlengkapan',
-      badge: 'Dana & Logistik',
-      desc: 'Divisi Dana & Perlengkapan bertugas memastikan semua kebutuhan perlengkapan kegiatan tersedia tepat waktu dan sesuai anggaran. Divisi ini menjadi tulang punggung operasional IC.',
-      tasks: ['Penggalangan dana', 'Inventaris dan pengadaan perlengkapan', 'Manajemen aset & logistik organisasi', 'Pemeliharaan dan penyiapan sarana kegiatan', 'Koordinasi kebutuhan teknis & perlengkapan acara', 'Pengecekan dan pemeliharaan alat operasional'],
-      members: [
-        { name: 'Koordinator Perlengkapan', role: 'Koordinator', image: 'images/members/Div. Perlengkapan.png' },
-        { name: 'Anggota Perlengkapan 1', role: 'Staff Perlengkapan', image: 'images/members/Div. Perlengkapan (3).png' },
-        { name: 'Anggota Perlengkapan 2', role: 'Staff Perlengkapan', image: 'images/members/Div. Perlengkapan (5).png' }
-      ]
-    }
-  };
+  0: {
+    emoji: '⚙️',
+    image: 'images/divisi/ketuawakil.jpg',
+    name: 'BPI',
+    full: 'Badan Pengurus Inti',
+    badge: 'Pengawasan & Evaluasi',
+    desc: 'Badan Pengurus Inti (BPI) bertugas memastikan seluruh tata kelola organisasi berjalan dengan transparan, akuntabel, dan sesuai dengan nilai serta regulasi yang telah ditetapkan. BPI menjadi garda terdepan dalam menjaga integritas dan profesionalisme Informatics Community.',
+    tasks: ['Mengawasi jalannya kegiatan organisasi', 'Melakukan evaluasi program kerja secara berkala', 'Memastikan kepatuhan terhadap AD/ART organisasi', 'Memberikan rekomendasi perbaikan tata kelola', 'Menjaga transparansi laporan keuangan', 'Mediasi konflik internal organisasi'],
+    members: [
+      { name: 'Ketua', role: 'Ketua', image: 'images/members/Ketua.png' },
+      { name: 'Wakil Ketua', role: 'Wakil Ketua', image: 'images/members/Wakil.png' },
+      { name: 'Sekretaris 1', role: 'Sekretaris 1', image: 'images/members/Sekretaris 1.png' },
+      { name: 'Sekretaris 2', role: 'Sekretaris 2', image: 'images/members/Sekretaris 2.png' },
+      { name: 'Bendahara 1', role: 'Bendahara 1', image: 'images/members/Bendahara 1.png' },
+      { name: 'Bendahara 2', role: 'Bendahara 2', image: 'images/members/Bendahara 2.png' }
+    ]
+  },
+  1: {
+    emoji: '🎯',
+    image: 'images/divisi/acara.jpg',
+    name: 'ACARA',
+    full: 'Divisi Acara',
+    badge: 'Event & Program',
+    desc: 'Divisi Acara bertanggung jawab merancang, mengelola, dan menjalankan seluruh rangkaian kegiatan dan event organisasi agar berjalan terstruktur, tepat waktu, dan berkesan bagi semua peserta. Dari seminar hingga kompetisi, Divisi Acara menjadi motor penggerak program-program unggulan IC.',
+    tasks: ['Perencanaan dan konsep acara', 'Koordinasi teknis pelaksanaan event', 'Manajemen timeline kegiatan', 'Briefing dan koordinasi antar divisi', 'Evaluasi pasca kegiatan', 'Pengembangan format acara baru'],
+    members: [
+      { name: 'Koordinator Acara', role: 'Koordinator', image: 'images/members/Div. Acara.png' },
+      { name: 'Anggota Acara 1', role: 'Staff Acara', image: 'images/members/Div. Acara (3).png' },
+      { name: 'Anggota Acara 2', role: 'Staff Acara', image: 'images/members/Div. Acara (5).png' },
+      { name: 'Anggota Acara 3', role: 'Staff Acara', image: 'images/members/Div. Acara (7).png' }
+    ]
+  },
+  2: {
+    emoji: '📡',
+    image: 'images/divisi/humas.jpg',
+    name: 'HUMAS',
+    full: 'Hubungan Masyarakat',
+    badge: 'Relasi & Komunikasi',
+    desc: 'Divisi Hubungan Masyarakat (HUMAS) bertugas membangun dan menjaga relasi yang kuat dengan pihak eksternal, mitra strategis, institusi pendidikan, serta komunitas lain di luar organisasi. HUMAS menjadi wajah IC dalam menjalin kolaborasi dan kemitraan yang berdampak positif.',
+    tasks: ['Menjalin kerjasama dengan mitra eksternal', 'Koordinasi dengan kampus dan institusi', 'Membangun jaringan antar komunitas', 'Outreach dan rekrutmen anggota baru', 'Representasi IC di forum eksternal', 'Pengelolaan MoU dan kerjasama'],
+    members: [
+      { name: 'Koordinator Humas', role: 'Koordinator', image: 'images/members/Div. Humas.png' },
+      { name: 'Anggota Humas', role: 'Staff Humas', image: 'images/members/Div. Humas (3).png' }
+    ]
+  },
+  3: {
+    emoji: '💡',
+    image: 'images/divisi/keilmuan.jpg',
+    name: 'KEILMUAN',
+    full: 'Divisi Keilmuan',
+    badge: 'Edukasi & Riset',
+    desc: 'Divisi Keilmuan mendorong pengembangan ilmu pengetahuan dan kompetensi teknis anggota melalui diskusi ilmiah, pelatihan terstruktur, dan program akademik berkualitas. Divisi ini menjadi pusat pertumbuhan intelektual dan riset di lingkungan Informatics Community.',
+    tasks: ['Menyelenggarakan workshop teknis', 'Program mentoring akademik', 'Diskusi ilmiah rutin (sharing session)', 'Kompetisi dan olimpiade internal', 'Pengembangan kurikulum pelatihan', 'Riset dan kajian teknologi terkini'],
+    members: [
+      { name: 'Koordinator Keilmuan', role: 'Koordinator', image: 'images/members/Div. Keilmuan.png' },
+      { name: 'Anggota Keilmuan 1', role: 'Staff Keilmuan', image: 'images/members/Div. Keilmuan (3).png' },
+      { name: 'Anggota Keilmuan 2', role: 'Staff Keilmuan', image: 'images/members/Div. Keilmuan (5).png' }
+    ]
+  },
+  4: {
+    emoji: '📸',
+    image: 'images/divisi/publidok.jpg',
+    name: 'PUBLIDOK',
+    full: 'Publikasi & Dokumentasi',
+    badge: 'Konten & Media',
+    desc: 'Divisi Publikasi dan Dokumentasi (PUBLIDOK) mengelola seluruh konten digital, publikasi media sosial, serta mendokumentasikan setiap kegiatan organisasi secara profesional and kreatif. PUBLIDOK memastikan jejak dan identitas IC tersebar luas di dunia digital.',
+    tasks: ['Desain konten media sosial', 'Fotografi dan videografi kegiatan', 'Pengelolaan akun sosial media IC', 'Produksi konten kreatif & reels', 'Pembuatan poster dan materi promosi', 'Arsip dokumentasi digital organisasi'],
+    members: [
+      { name: 'Koordinator Publidok', role: 'Koordinator', image: 'images/members/Div. Publidok.png' },
+      { name: 'Anggota Publidok 1', role: 'Staff Publidok', image: 'images/members/Div. Publidok (3).png' },
+      { name: 'Anggota Publidok 2', role: 'Staff Publidok', image: 'images/members/Div. Publidok (5).png' },
+      { name: 'Anggota Publidok 3', role: 'Staff Publidok', image: 'images/members/Div. Publidok (7).png' }
+    ]
+  },
+  5: {
+    emoji: '🍽️',
+    image: 'images/divisi/konsumsi.jpg',
+    name: 'KONSUM',
+    full: 'Divisi Konsumsi',
+    badge: 'Logistik & Layanan',
+    desc: 'Divisi Konsumsi memastikan kebutuhan konsumsi setiap kegiatan organisasi terpenuhi dengan baik, terencana, dan efisien. Divisi ini bekerja keras di balik layar untuk mendukung kelancaran setiap acara dengan memperhatikan kualitas, kuantitas, dan ketepatan waktu penyajian.',
+    tasks: ['Perencanaan kebutuhan konsumsi acara', 'Survey dan pemilihan vendor konsumsi', 'Pengelolaan anggaran konsumsi', 'Koordinasi distribusi konsumsi', 'Quality control penyajian makanan', 'Evaluasi kepuasan peserta acara'],
+    members: [
+      { name: 'Koordinator Konsumsi', role: 'Koordinator', image: 'images/members/Div. Konsum (1).png' },
+      { name: 'Anggota Konsumsi', role: 'Staff Konsumsi', image: 'images/members/Div. Konsum (2).png' }
+    ]
+  },
+  6: {
+    emoji: '💰',
+    image: 'images/divisi/perkap.jpg',
+    name: 'DANA & PERKAP',
+    full: 'Dana & Perlengkapan',
+    badge: 'Dana & Logistik',
+    desc: 'Divisi Dana & Perlengkapan bertugas memastikan semua kebutuhan perlengkapan kegiatan tersedia tepat waktu dan sesuai anggaran. Divisi ini menjadi tulang punggung operasional IC.',
+    tasks: ['Penggalangan dana', 'Inventaris dan pengadaan perlengkapan', 'Manajemen aset & logistik organisasi', 'Pemeliharaan dan penyiapan sarana kegiatan', 'Koordinasi kebutuhan teknis & perlengkapan acara', 'Pengecekan dan pemeliharaan alat operasional'],
+    members: [
+      { name: 'Koordinator Perlengkapan', role: 'Koordinator', image: 'images/members/Div. Perlengkapan.png' },
+      { name: 'Anggota Perlengkapan 1', role: 'Staff Perlengkapan', image: 'images/members/Div. Perlengkapan (3).png' },
+      { name: 'Anggota Perlengkapan 2', role: 'Staff Perlengkapan', image: 'images/members/Div. Perlengkapan (5).png' }
+    ]
+  }
+};
 
 function getMemberInitials(name) {
   return name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
@@ -471,7 +535,9 @@ function initMemberCarousel(wrapper, startIndex = 0) {
     if (animate) isTransitioning = true;
   }
 
-  track.addEventListener('transitionend', () => {
+  track.addEventListener('transitionend', (e) => {
+    // Perubahan: abaikan transisi milik card di dalam track, hanya hitung transisi track itu sendiri
+    if (e.target !== track) return;
     isTransitioning = false;
     if (current < total) {
       goTo(current + total, false);
@@ -497,11 +563,11 @@ function initMemberCarousel(wrapper, startIndex = 0) {
   goTo(current, false);
 }
 
-(function() {
+(function () {
   const overlay = document.getElementById('divisiOverlay');
   const pageContent = document.getElementById('divisiPageContent');
 
-  window.openDivisiPage = function(index) {
+  window.openDivisiPage = function (index) {
     const d = divisiData[index];
     if (!d) return;
     const existingCarousel = pageContent.querySelector('.member-carousel-wrapper');
@@ -537,6 +603,8 @@ function initMemberCarousel(wrapper, startIndex = 0) {
       <div class="divisi-page-tasks">${tasksHTML}</div>
       ${membersHTML}
     `;
+    clearTimeout(closeTimer);
+    overlay.classList.remove('closing');
     overlay.classList.add('open');
     // Perubahan: Membuat agar halaman utama di background tidak bisa discroll ketika di divisi overlay
     document.documentElement.classList.add('divisi-open');
@@ -545,22 +613,20 @@ function initMemberCarousel(wrapper, startIndex = 0) {
     if (memberCarousel) initMemberCarousel(memberCarousel, 0);
   };
 
-  window.closeDivisiPage = function() {
+  // Perubahan: Animasi tutup dipercepat dan memakai class .closing (lihat styles.css)
+  let closeTimer;
+  window.closeDivisiPage = function () {
+    if (overlay.classList.contains('closing')) return; // abaikan klik ganda
     const memberCarousel = pageContent.querySelector('.member-carousel-wrapper');
     if (memberCarousel && memberCarousel._memberResizeHandler) {
       window.removeEventListener('resize', memberCarousel._memberResizeHandler);
     }
-    overlay.style.opacity = '0';
-    overlay.style.transform = 'translateY(20px)';
-    overlay.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-    setTimeout(() => {
-      overlay.classList.remove('open');
-      overlay.style.opacity = '';
-      overlay.style.transform = '';
-      overlay.style.transition = '';
+    overlay.classList.add('closing');
+    closeTimer = setTimeout(() => {
+      overlay.classList.remove('open', 'closing');
       // Perubahan: Membuat agar halaman utama di background tidak bisa discroll ketika di divisi overlay
-      document.documentElement.classList.remove('divisi-open');;
-    }, 300);
+      document.documentElement.classList.remove('divisi-open');
+    }, 180);
   };
 
   // Close on ESC
@@ -570,11 +636,11 @@ function initMemberCarousel(wrapper, startIndex = 0) {
 })();
 
 // ─── EVENTS VIDEO CHANGER ───
-window.toggleMute = function() {
+window.toggleMute = function () {
   const videoObj = document.getElementById('featured-video');
   const muteIcon = document.getElementById('mute-icon');
   if (!videoObj) return;
-  
+
   if (videoObj.muted) {
     videoObj.muted = false;
     if (muteIcon) muteIcon.textContent = '🔊';
@@ -590,26 +656,26 @@ window.toggleMute = function() {
   if (!video || !('IntersectionObserver' in window)) return;
 
   const io = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) video.play().catch(() => {});
+    if (entry.isIntersecting) video.play().catch(() => { });
     else video.pause();
   }, { threshold: 0.25 });
 
   io.observe(video);
 })();
 
-window.changeFeaturedEvent = function(videoSrc, year, status, statusClass, title, desc) {
+window.changeFeaturedEvent = function (videoSrc, year, status, statusClass, title, desc) {
   const videoObj = document.getElementById('featured-video');
   const yearObj = document.getElementById('featured-year');
   const statusObj = document.getElementById('featured-status');
   const titleObj = document.getElementById('featured-title');
   const descObj = document.getElementById('featured-desc');
   const featuredBody = document.getElementById('featured-container');
-  
+
   if (!videoObj || !featuredBody) return;
-  
+
   // Fade out effect
   featuredBody.style.opacity = '0';
-  
+
   // Perubahan: Membuat video lebih ringan
   setTimeout(() => {
     videoObj.removeAttribute('poster');
@@ -620,13 +686,13 @@ window.changeFeaturedEvent = function(videoSrc, year, status, statusClass, title
     statusObj.className = 'event-status ' + statusClass;
     titleObj.textContent = title;
     descObj.textContent = desc;
-    videoObj.play().catch(() => {});
-    
+    videoObj.play().catch(() => { });
+
     // Unmute automatically on user interaction
     videoObj.muted = false;
     const muteIcon = document.getElementById('mute-icon');
     if (muteIcon) muteIcon.textContent = '🔊';
-    
+
     // Fade in
     featuredBody.style.opacity = '1';
   }, 300);
@@ -654,23 +720,102 @@ window.changeFeaturedEvent = function(videoSrc, year, status, statusClass, title
       // Jangan biarkan video tetap berjalan di belakang tab lain
       const video = document.getElementById('featured-video');
       if (video) {
-        if (target === 'events') video.play().catch(() => {});
+        if (target === 'events') video.play().catch(() => { });
         else video.pause();
       }
     });
   });
 })();
 
+// Perubahan: Kode Activities digabung langsung ke script.js
+// ─── ACTIVITIES (video, mute, klik card) ───
+// Semua ID di panel Activities memakai awalan "act-" supaya tidak bentrok dengan ID di panel Events.
+// Tombol mute / unmute video Activities
+window.toggleActivityMute = function () {
+  const video = document.getElementById('act-featured-video');
+  const icon = document.getElementById('act-mute-icon');
+  if (!video) return;
+  video.muted = !video.muted;
+  if (icon) icon.textContent = video.muted ? '🔇' : '🔊';
+};
+
+// Klik card kecil di kanan -> tampil di card besar di kiri
+window.changeFeaturedActivity = function (videoSrc, year, status, statusClass, title, desc) {
+  const video = document.getElementById('act-featured-video');
+  const yearObj = document.getElementById('act-featured-year');
+  const statusObj = document.getElementById('act-featured-status');
+  const titleObj = document.getElementById('act-featured-title');
+  const descObj = document.getElementById('act-featured-desc');
+  const box = document.getElementById('act-featured-container');
+  if (!video || !box) return;
+
+  box.style.opacity = '0';
+
+  setTimeout(() => {
+    video.removeAttribute('poster');
+    video.src = videoSrc;
+    video.load();
+    yearObj.textContent = year;
+    statusObj.textContent = status;
+    statusObj.className = 'event-status ' + statusClass;
+    titleObj.textContent = title;
+    descObj.textContent = desc;
+    video.play().catch(() => { });
+
+    // Klik adalah interaksi user, jadi suara boleh langsung nyala (sama seperti Events)
+    video.muted = false;
+    const icon = document.getElementById('act-mute-icon');
+    if (icon) icon.textContent = '🔊';
+
+    box.style.opacity = '1';
+  }, 300);
+};
+
+// Video hanya main saat panel Activities terlihat (hemat performa)
+(function () {
+  const video = document.getElementById('act-featured-video');
+  const panel = document.getElementById('panel-activities');
+  if (!video) return;
+
+  let inView = false;
+  const panelVisible = () => !panel || !panel.hidden;
+
+  // Perubahan: Video baru mulai setelah animasi pindah tab selesai (agar tidak lag)
+  let playTimer;
+  function sync() {
+    clearTimeout(playTimer);
+    if (inView && panelVisible()) {
+      playTimer = setTimeout(() => video.play().catch(() => { }), 450);
+    } else {
+      video.pause();
+    }
+  }
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      sync();
+    }, { threshold: 0.25 }).observe(video);
+  } else {
+    inView = true;
+  }
+
+  // Pause saat pindah tab ke Events, main lagi saat kembali ke Activities
+  if (panel && 'MutationObserver' in window) {
+    new MutationObserver(sync).observe(panel, { attributes: true, attributeFilter: ['hidden'] });
+  }
+})();
+
 // ─── IC TERMINAL BOOTLOADER ───
-(function() {
+(function () {
   const loader = document.getElementById('ic-loader');
   const terminal = document.getElementById('loader-terminal');
   const cursor = document.getElementById('loader-cursor');
-  if(!loader) return;
+  if (!loader) return;
 
   // Perubahan: Skip intro jika sudah pernah main
   let seen = false;
-  try { seen = sessionStorage.getItem('ic-intro-seen') === '1'; } catch (e) {}
+  try { seen = sessionStorage.getItem('ic-intro-seen') === '1'; } catch (e) { }
   if (seen) {
     loader.remove();
     document.body.classList.add('loaded');
@@ -690,18 +835,18 @@ window.changeFeaturedEvent = function(videoSrc, year, status, statusClass, title
   let currentLineEl = null;
 
   function typeLine() {
-    if(lineIdx >= lines.length) {
+    if (lineIdx >= lines.length) {
       // Sequence finished
       setTimeout(() => {
         loader.classList.add('hide');
         document.body.classList.add('loaded');
-        try { sessionStorage.setItem('ic-intro-seen', '1'); } catch (e) {}
+        try { sessionStorage.setItem('ic-intro-seen', '1'); } catch (e) { }
         setTimeout(() => loader.remove(), 1000);
       }, 200);
       return;
     }
 
-    if(charIdx === 0) {
+    if (charIdx === 0) {
       currentLineEl = document.createElement('div');
       currentLineEl.className = 'loader-line';
       currentLineEl.innerHTML = '<span style="color:#79d799; font-weight:bold;">$</span> ';
@@ -711,7 +856,7 @@ window.changeFeaturedEvent = function(videoSrc, year, status, statusClass, title
     currentLineEl.innerHTML += lines[lineIdx][charIdx];
     charIdx++;
 
-    if(charIdx < lines[lineIdx].length) {
+    if (charIdx < lines[lineIdx].length) {
       // Typing speed variation
       let speed = Math.random() * 8 + 3;
       setTimeout(typeLine, speed);
@@ -728,7 +873,7 @@ window.changeFeaturedEvent = function(videoSrc, year, status, statusClass, title
 
 // Theme Switcher Logic
 // Perubahan: Membuat perubahan theme pada Mobile lebih instant
-(function() {
+(function () {
   const themeToggle = document.getElementById('theme-toggle');
   if (!themeToggle) return;
 
@@ -759,21 +904,21 @@ window.changeFeaturedEvent = function(videoSrc, year, status, statusClass, title
 })();
 
 // ─── PELAJARI LEBIH LANJUT SMOOTH SCROLL & TRANSITION ───
-(function() {
+(function () {
   const learnMoreBtn = document.getElementById('learnMoreBtn');
   if (!learnMoreBtn) return;
 
-  learnMoreBtn.addEventListener('click', function(e) {
+  learnMoreBtn.addEventListener('click', function (e) {
     e.preventDefault();
     const targetSection = document.getElementById('about');
     if (targetSection) {
       targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      
+
       // Trigger section highlight transition
       targetSection.classList.remove('scroll-highlight');
       void targetSection.offsetWidth; // trigger reflow
       targetSection.classList.add('scroll-highlight');
-      
+
       setTimeout(() => {
         targetSection.classList.remove('scroll-highlight');
       }, 1200);
@@ -782,12 +927,12 @@ window.changeFeaturedEvent = function(videoSrc, year, status, statusClass, title
 })();
 
 // --- INTERACTIVE HERO TITLE ---
-(function() {
+(function () {
   const titleLines = document.querySelectorAll('.interactive-title .title-line');
   titleLines.forEach(line => {
     const text = line.textContent.trim();
     line.innerHTML = '';
-    for(let i=0; i<text.length; i++) {
+    for (let i = 0; i < text.length; i++) {
       let span = document.createElement('span');
       span.textContent = text[i] === ' ' ? '\u00A0' : text[i];
       span.className = 'hover-char';
@@ -797,7 +942,7 @@ window.changeFeaturedEvent = function(videoSrc, year, status, statusClass, title
 
   // Parallax effect on mouse move
   const heroContent = document.querySelector('.hero-content');
-  if(heroContent) {
+  if (heroContent) {
     document.addEventListener('mousemove', (e) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 20;
       const y = (e.clientY / window.innerHeight - 0.5) * 20;
